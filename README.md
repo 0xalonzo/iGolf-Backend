@@ -20,3 +20,4 @@ Technologies Used
 - JWT (JSON Web Token): For user authentication.
 - Swagger: For API documentation.
 - CORS: To enable cross-origin resource sharing.
+- Run the Backend using 'dotnet run'
