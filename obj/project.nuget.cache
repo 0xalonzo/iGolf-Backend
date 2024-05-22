@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "COP/264JcrLdHueM6JissT28T69YB0oqwDGn0qbl2Mae6jElZ+eFvicoT6eQbfphHISVG7SIhV6wyCpsl38Z8g==",
+  "dgSpecHash": "XXewREPnJ2uwnuNmzUFx46MWYJseF2ikq26aOCLkx07mR1mJnoNxt+hjAOHzrJ3FDYnrD/l4PwlxP1OxKGDN9g==",
   "success": true,
   "projectFilePath": "C:\\Users\\Alonzo\\Documents\\Projects\\iGolf\\igolf-backend\\igolf-backend.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Alonzo\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Alonzo\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Alonzo\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.5\\microsoft.aspnetcore.authentication.jwtbearer.8.0.5.nupkg.sha512",
     "C:\\Users\\Alonzo\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.4\\microsoft.aspnetcore.openapi.8.0.4.nupkg.sha512",

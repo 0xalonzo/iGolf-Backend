@@ -61,7 +61,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 app.Logger.LogInformation("Using connection string: {ConnectionString}", connectionString);
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c => {

@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using IgolfBackend.Data;
 using IgolfBackend.Models;
+using BCrypt.Net;
 
 namespace IgolfBackend.Controllers
 {
@@ -27,6 +28,8 @@ namespace IgolfBackend.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<User>> Register(User user)
         {
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            user.Password = hashedPassword;
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(Register), new { id = user.Id }, user);
@@ -35,15 +38,35 @@ namespace IgolfBackend.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == loginRequest.Username && u.Password == loginRequest.Password);
+            var user = await _context.Users
+                .Include(u => u.FavoriteCourses)
+                .FirstOrDefaultAsync(u => u.Username == loginRequest.Username);
 
             if (user == null)
             {
                 return Unauthorized();
             }
 
+            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.Password);
+
+            if (!isPasswordValid)
+            {
+                return Unauthorized();
+            }
+
             var token = GenerateJwtToken(user);
-            return Ok(new { Token = token, User = user });
+            return Ok(new
+            {
+                Token = token,
+                User = new
+                {
+                    Id = user.Id,
+                    Password = user.Password,
+                    Username = user.Username,
+                    Fullname = user.Fullname,
+                    FavoriteCourses = user.FavoriteCourses
+                }
+            });
         }
 
         private string GenerateJwtToken(User user)
@@ -52,10 +75,7 @@ namespace IgolfBackend.Controllers
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Name, user.Username)
-                }),
+                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.Username) }),
                 Expires = DateTime.UtcNow.AddMinutes(double.Parse(_configuration["Jwt:DurationInMinutes"])),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Issuer = _configuration["Jwt:Issuer"],

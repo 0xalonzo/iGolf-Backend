@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace IgolfBackend.Models
@@ -9,5 +10,6 @@ namespace IgolfBackend.Models
         public string Username { get; set; }
         public string Password { get; set; }
         public string Fullname { get; set; }
+        public List<Course> FavoriteCourses { get; set; } = new List<Course>();
     }
 }
